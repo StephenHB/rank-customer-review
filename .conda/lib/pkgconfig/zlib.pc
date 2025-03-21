@@ -1,0 +1,13 @@
+prefix=/Users/stephenzhang/Documents/code/rank-customer-review/.conda
+exec_prefix=/Users/stephenzhang/Documents/code/rank-customer-review/.conda
+libdir=/Users/stephenzhang/Documents/code/rank-customer-review/.conda/lib
+sharedlibdir=/Users/stephenzhang/Documents/code/rank-customer-review/.conda/lib
+includedir=/Users/stephenzhang/Documents/code/rank-customer-review/.conda/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.13
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}
