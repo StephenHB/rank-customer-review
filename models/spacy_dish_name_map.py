@@ -115,3 +115,33 @@ def apply_spacy_to_df(
         )
 
     return df
+
+
+def apply_spacy_to_df(
+    df, action_verbs, menu_items, filter_validate_menu=False, min_freq=2
+):
+    # Extract raw dishes
+    df["dishes_raw"] = df["text_clean"].apply(
+        lambda text: extract_dishes_spacy(text, action_verbs)
+    )
+
+    # Lemmatize the extracted dishes
+    df["dishes_lemmatized"] = df["dishes_raw"].apply(
+        lambda dishes: [lemmatize_dish(dish) for dish in dishes]
+    )
+    # Filter dishes based on frequency
+    all_texts = df["text_clean"].tolist()
+    filtered_dishes = filter_dishes_spacy(all_texts, action_verbs, min_freq)
+
+    # Add filtered dishes to the DataFrame
+    df["filtered_dishes"] = df["dishes_lemmatized"].apply(
+        lambda dishes: [dish for dish in dishes if dish in filtered_dishes]
+    )
+
+    # Optionally validate dishes against a menu
+    if filter_validate_menu:
+        df["valid_dishes"] = df["filtered_dishes"].apply(
+            lambda dishes: [dish for dish in dishes if dish in menu_items]
+        )
+
+    return df
