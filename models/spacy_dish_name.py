@@ -1,12 +1,10 @@
 import re
-import pandas as pd
-import re
-import nltk
-from nltk.corpus import stopwords
+import subprocess
 from collections import Counter
 import spacy
-import subprocess
+from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+
 
 try:
     nlp = spacy.load("en_core_web_sm")
@@ -41,7 +39,9 @@ def get_menu_items(df, col_name, top_n_menu_items=100):
         for chunk in doc.noun_chunks:
             if len(chunk.text.split()) >= 2:
                 menu_candidates.append(chunk.text.lower())
-    menu_items = set([item for item, cnt in Counter(menu_candidates).most_common(100)])
+    menu_items = set(
+        [item for item, cnt in Counter(menu_candidates).most_common(top_n_menu_items)]
+    )
     return menu_items
 
 
@@ -74,7 +74,7 @@ def extract_dishes_spacy(text, action_verbs):
 def filter_dishes_spacy(texts, action_verbs, min_freq=2):
     all_dishes = []
     # stop_words = {"food", "service", "restaurant", "place"}
-    stop_words = set(stopwords.words('english'))
+    stop_words = set(stopwords.words("english"))
     for text in texts:
         dishes = extract_dishes_spacy(text, action_verbs)
         filtered = [
