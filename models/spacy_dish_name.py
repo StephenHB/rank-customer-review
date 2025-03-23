@@ -3,7 +3,6 @@ import pandas as pd
 import re
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from collections import Counter
 import spacy
 import subprocess
@@ -74,7 +73,8 @@ def extract_dishes_spacy(text, action_verbs):
 
 def filter_dishes_spacy(texts, action_verbs, min_freq=2):
     all_dishes = []
-    stop_words = {"food", "service", "restaurant", "place"}
+    # stop_words = {"food", "service", "restaurant", "place"}
+    stop_words = set(stopwords.words('english'))
     for text in texts:
         dishes = extract_dishes_spacy(text, action_verbs)
         filtered = [
